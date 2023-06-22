@@ -74,26 +74,6 @@ public class GenerateSignatureController {
         return map;
     }
 
-    private PrivateKey readPrivateKey() throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
-        String pathFile = "key";
-        String filename = "private-key.pem";
-        File file = new File(pathFile, filename);
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        StringBuilder builder = new StringBuilder();
-        String line;
-        while ((line = reader.readLine()) != null) {
-            if (!line.startsWith("-----")) {
-                builder.append(line);
-            }
-        }
-        reader.close();
-        byte[] keyBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(builder.toString());
-        logger.info(builder.toString());
-        PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(keyBytes);
-        KeyFactory kf = KeyFactory.getInstance("RSA");
-        return kf.generatePrivate(spec);
-    }
-
 
     private PrivateKey generatePrivateKey(String value) throws NoSuchAlgorithmException, InvalidKeySpecException {
         byte[] keyBytes = javax.xml.bind.DatatypeConverter.parseBase64Binary(value);
